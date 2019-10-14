@@ -130,6 +130,70 @@ export function updateTerm( siteId, taxonomy, termId, termSlug, term ) {
  */
 export function deleteTerm( siteId, taxonomy, termId, termSlug ) {
 	return ( dispatch, getState ) => {
+		// Taxonomy Slugs are not unique! Use wp/v2 for deletion to avoid deleting the wrong term!
+		// https://github.com/Automattic/wp-calypso/issues/36620
+		if ( taxonomy === 'post_tag' || taxonomy === 'category' ) {
+			const basePath = taxonomy === 'post_tag' ? 'tags' : 'categories';
+
+			return wpcom.req
+				.get( {
+					path: `/sites/${ siteId }/${ basePath }/${ termId }?force=true`,
+					method: 'DELETE',
+					apiNamespace: 'wp/v2',
+				} )
+				.then( () => {
+					const state = getState();
+					const deletedTerm = getTerm( state, siteId, taxonomy, termId );
+					const deletedTermPostCount = get( deletedTerm, 'post_count', 0 );
+
+					// Update the parentId of its children
+					const termsToUpdate = filter( getTerms( state, siteId, taxonomy ), term => {
+						return term.parent === termId;
+					} ).map( term => {
+						return { ...term, parent: deletedTerm.parent };
+					} );
+					if ( termsToUpdate.length ) {
+						dispatch( receiveTerms( siteId, taxonomy, termsToUpdate ) );
+					}
+
+					// Drop the term from posts
+					const postsToUpdate = getSitePostsByTerm( state, siteId, taxonomy, termId );
+					postsToUpdate.forEach( post => {
+						const newTerms = filter( post.terms[ taxonomy ], postTerm => postTerm.ID !== termId );
+						dispatch(
+							editPost( siteId, post.ID, {
+								terms: {
+									[ taxonomy ]: newTerms,
+								},
+							} )
+						);
+					} );
+
+					// update default category post count if applicable
+					if ( taxonomy === 'category' && deletedTermPostCount > 0 ) {
+						const siteSettings = getSiteSettings( state, siteId );
+						const defaultCategory = getTerm(
+							state,
+							siteId,
+							taxonomy,
+							get( siteSettings, [ 'default_category' ] )
+						);
+						if ( defaultCategory ) {
+							dispatch(
+								receiveTerm( siteId, taxonomy, {
+									...defaultCategory,
+									post_count: defaultCategory.post_count + deletedTermPostCount,
+								} )
+							);
+						}
+					}
+
+					// remove the term from the store
+					dispatch( removeTerm( siteId, taxonomy, termId ) );
+				} );
+		}
+
+		// Fallback, if some other taxonomy
 		return wpcom
 			.site( siteId )
 			.taxonomy( taxonomy )
