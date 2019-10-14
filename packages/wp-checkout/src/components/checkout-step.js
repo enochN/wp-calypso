@@ -59,7 +59,7 @@ function CheckoutStepHeader( { className, stepNumber, title, collapsed, onEdit }
 
 CheckoutStepHeader.propTypes = {
 	className: PropTypes.string,
-	stepNumber: PropTypes.number.isRequired,
+	stepNumber: PropTypes.oneOf( [ 1, 2, 3 ] ).isRequired,
 	title: PropTypes.string.isRequired,
 	collapsed: PropTypes.bool,
 	onEdit: PropTypes.func,
