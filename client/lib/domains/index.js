@@ -376,6 +376,7 @@ export {
 	getUnformattedDomainSalePrice,
 	hasMappedDomain,
 	isHstsRequired,
+	isMappedDomain,
 	isMappedDomainWithWpcomNameservers,
 	isRegisteredDomain,
 	isSubdomain,
