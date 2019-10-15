@@ -47,4 +47,7 @@ describe( 'formatMonetaryAmountForLocale', function() {
 	it( 'us/EUR, €1,234.56', function() {
 		expect( formatMonetaryAmountForLocale( 'us', 'EUR', 123456 ) ).toBe( '€1,234.56' );
 	} );
+	it( 'us/CAD, $1,234.56 CAD', function() {
+		expect( formatMonetaryAmountForLocale( 'us', 'CAD', 123456 ) ).toBe( '$1,234.56 CAD' );
+	} );
 } );
