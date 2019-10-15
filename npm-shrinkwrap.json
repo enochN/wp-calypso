@@ -45,7 +45,7 @@
 				"file-loader": "3.0.1",
 				"jest-config": "24.9.0",
 				"jest-enzyme": "7.1.1",
-				"mini-css-extract-plugin-with-rtl": "mini-css-extract-plugin-with-rtl@github:Automattic/mini-css-extract-plugin-with-rtl#v0.7.0-with-rtl",
+				"mini-css-extract-plugin-with-rtl": "github:Automattic/mini-css-extract-plugin-with-rtl#v0.7.0-with-rtl",
 				"node-sass": "4.11.0",
 				"postcss-custom-properties": "8.0.9",
 				"postcss-loader": "3.0.0",
@@ -3004,9 +3004,9 @@
 			"dev": true
 		},
 		"@types/react": {
-			"version": "16.8.16",
-			"resolved": "https://registry.npmjs.org/@types/react/-/react-16.8.16.tgz",
-			"integrity": "sha512-A0+6kS6zwPtvubOLiCJmZ8li5bm3wKIkoKV0h3RdMDOnCj9cYkUnj3bWbE03/lcICdQmwBmUfoFiHeNhbFiyHQ==",
+			"version": "16.9.7",
+			"resolved": "https://registry.npmjs.org/@types/react/-/react-16.9.7.tgz",
+			"integrity": "sha512-cF/zwVSOa/NQ5ZSLwUmAdeARgJkmu94shnqDO0dUOsp5roeS8SXtYv06uKeQMYgMjnP6dXH5CecxL+GibvqEFg==",
 			"dev": true,
 			"requires": {
 				"@types/prop-types": "*",
@@ -14449,8 +14449,8 @@
 			"integrity": "sha512-jf84uxzwiuiIVKiOLpfYk7N46TSy8ubTonmneY9vrpHNAnp0QBt2BxWV9dO3/j+BoVAb+a5G6YDPW3M5HOdMWQ=="
 		},
 		"mini-css-extract-plugin-with-rtl": {
-			"version": "github:Automattic/mini-css-extract-plugin-with-rtl#v0.7.0-with-rtl",
-			"from": "mini-css-extract-plugin-with-rtl@github:Automattic/mini-css-extract-plugin-with-rtl#v0.7.0-with-rtl",
+			"version": "github:Automattic/mini-css-extract-plugin-with-rtl#f48ce03f385390257bdacbfec4759d38df983361",
+			"from": "github:Automattic/mini-css-extract-plugin-with-rtl#v0.7.0-with-rtl",
 			"dev": true,
 			"requires": {
 				"loader-utils": "^1.1.0",
