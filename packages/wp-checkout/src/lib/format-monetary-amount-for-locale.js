@@ -1,6 +1,11 @@
 /* @format */
 
 /**
+ * External dependencies
+ */
+import { isString } from 'lodash';
+
+/**
  * Format a monetary amount according to the custom of a given locale.
  *
  * Displaying monetary amounts depends on
@@ -31,10 +36,10 @@
  */
 export default function formatMonetaryAmountForLocale( localeCode, currencyCode, amount ) {
 	// Validate input
-	if ( ! ( typeof locale === 'string' || localeCode instanceof String ) ) {
+	if ( ! isString( localeCode ) ) {
 		throw 'locale parameter must be a string.';
 	}
-	if ( ! ( typeof currency === 'string' || currencyCode instanceof String ) ) {
+	if ( ! isString( currencyCode ) ) {
 		throw 'currency parameter must be a string.';
 	}
 	if ( ! ( typeof amount === 'number' || amount instanceof Number ) ) {
@@ -53,26 +58,15 @@ export default function formatMonetaryAmountForLocale( localeCode, currencyCode,
 		case 'us':
 			switch ( normalizedCurrencyCode ) {
 				case 'USD':
-					return formatSymbolAmount(
-						amountSign,
-						absoluteAmount,
-						normalizedLocaleCode,
-						normalizedCurrencyCode
-					);
 				case 'JPY':
-					return formatSymbolAmount(
-						amountSign,
-						absoluteAmount,
-						normalizedLocaleCode,
-						normalizedCurrencyCode
-					);
 				case 'GBP':
-					return formatSymbolAmount(
-						amountSign,
-						absoluteAmount,
-						normalizedLocaleCode,
-						normalizedCurrencyCode
-					);
+                case 'EUR':
+                    return formatSymbolAmount(
+                        amountSign,
+                        absoluteAmount,
+                        normalizedLocaleCode,
+                        normalizedCurrencyCode
+                    );
 				default:
 					return formatSymbolAmountCode(
 						amountSign,
@@ -193,7 +187,7 @@ function groupDigits( amount ) {
 		const nextGroup = localAmount % 1000;
 		const remainder = Math.floor( localAmount / 1000 );
 
-		return groupDigitsAccum( remainder, [ nextGroup.toString() ].concat( localDigits ) );
+		return groupDigitsAccum( remainder, [ nextGroup.toString().padStart( 3, '0' ) ].concat( localDigits ) );
 	}
 
 	return groupDigitsAccum( amount, [] );
@@ -263,6 +257,15 @@ function symbolForCurrency( currencyCode ) {
 		case 'NZD':
 		case 'USD':
 			return '$';
+
+        case 'GBP':
+            return '£';
+
+        case 'EUR':
+            return '€';
+
+        case 'JPY':
+            return '¥';
 
 		default:
 			throw 'Unknown currency symbol';
